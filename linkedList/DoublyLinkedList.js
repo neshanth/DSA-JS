@@ -82,14 +82,72 @@ class DoublyLinkedList {
         this.length--
         return nodeToRemove
     }
+    insertNode(val, index) {
+        if (index < 0) return null
+        if (index === 0) return this.prepend(val)
+        if (index >= this.length) return this.append(val)
+
+        let current = this.head;
+        let counter = 0;
+        // Start iterating till we get the node at index given
+        while (current && counter !== index) {
+            current = current.next;
+            counter++
+        }
+        // Create a new node
+        const newNode = new Node(val)
+        // Set the next pointer to point to new node
+        newNode.next = current
+        // Also set prev to point to whatever was the previous node of current
+        newNode.prev = current.prev;
+
+        if (current.prev) {
+            // node that is before current, will have next pointing to current node. 
+            // Make it point to new Node since, that will take the place of current
+            current.prev.next = newNode
+        }
+        current.prev = newNode
+        this.length++
+        return newNode
+    }
+    removeNode(index) {
+        if (!this.head) return null
+        if (index < 0 || index > this.length) return null
+        if (index === 0 || this.length === 1) return this.removeFirstNode();
+        if (index === this.length - 1) return this.removeLastNode();
+        let current = this.head
+        let counter = 0;
+        while (current && counter !== index) {
+            current = current.next;
+            counter++
+        }
+        // update next and prev pointers of current node
+        if (current.next) {
+            current.next.prev = current.prev;
+        }
+        if (current.prev) {
+            current.prev.next = current.next;
+        }
+        this.length--
+        return current
+    }
+    printList() {
+        let current = this.head
+        let res = ""
+        while (current) {
+            res += current.val
+            current = current.next
+            if (current) res += "->"
+        }
+        console.log(res)
+    }
 }
 
 const dd = new DoublyLinkedList();
 dd.append(1);
 dd.append(2)
 dd.prepend(0);
-// dd.removeFirstNode()
-dd.removeLastNode()
-dd.removeLastNode()
-dd.removeLastNode()
-console.log(dd)
+dd.insertNode(1.5, 1)
+dd.removeNode(1)
+dd.append(100)
+dd.printList()
