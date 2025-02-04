@@ -51,10 +51,45 @@ class DoublyLinkedList {
         this.length++
         return newNode
     }
+    removeFirstNode() {
+        if (!this.head) {
+            return null
+        }
+        const nodeToRemove = this.head;
+        // updating head to point to the next node
+        this.head = this.head.next;
+        // if this node is the only node and list becomes empty
+        if (!this.head) {
+            this.tail = null
+        } else {
+            this.head.prev = null;
+        }
+        this.length--
+        return nodeToRemove
+    }
+    removeLastNode() {
+        if (!this.tail) {
+            return null
+        }
+        const nodeToRemove = this.tail
+        this.tail = this.tail.prev;
+        if (!this.tail) {
+            this.head = null
+        } else {
+            this.tail.next = null
+        }
+
+        this.length--
+        return nodeToRemove
+    }
 }
 
 const dd = new DoublyLinkedList();
 dd.append(1);
 dd.append(2)
 dd.prepend(0);
+// dd.removeFirstNode()
+dd.removeLastNode()
+dd.removeLastNode()
+dd.removeLastNode()
 console.log(dd)
